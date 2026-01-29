@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% import "_macros.html" as m %}
+
+{% block content %}
+<h2>Distancia entre dos puntos</h2>
+<form method="POST">
+    {{ m.datos("x1", "Coordenada X1", "number") }}
+    {{ m.datos("y1", "Coordenada Y1", "number") }}
+    {{ m.datos("x2", "Coordenada X2","number") }}
+    {{ m.datos("y2", "Coordenada Y2", "number") }}
+
+    <button type="submit">Calcular</button>
+</form>
+
+<h3>Resultado:</h3>
+<p>La distancia es: <strong>{{ distancia }}</strong></p>
+
+{% endblock %}
+
+
