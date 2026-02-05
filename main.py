@@ -2,10 +2,12 @@ from flask import Flask, render_template, request
  # mensajes de ruta a la vista
 from flask import flash
 from flask_wtf.csrf import CSRFProtect
-
+from cine import procesar
+from forms import CineForm
 import forms 
 
 app = Flask(__name__)
+
 app.secret_key='Clave secreta'
 csrf=CSRFProtect()
 
@@ -187,7 +189,58 @@ def distancia():
 
     return render_template('distanciaDosPuntos.html', distancia=distancia)
 
+@app.route("/cine", methods=["GET", "POST"])
+def cine():
+    form_Class = forms.CineForm(request.form)
 
+    resultado = None
+    nombre = None
+
+    if request.method == "POST"  and form_Class.validate():
+        nombre = form_Class.nombre.data
+        cantB = form_Class.cantB.data
+        cantP = form_Class.cantP.data
+        formPago = form_Class.tarjeta.data
+
+        resultado = procesar(formPago, cantB, cantP)
+
+    return render_template(
+        "cine.html",
+        form=form_Class,
+        resultado=resultado,
+        nombre=nombre, 
+    )
+
+
+    form = CineForm(request.form)
+
+    # DIAGNÓSTICO - AGREGAR ESTAS LÍNEAS
+    print("=" * 50)
+    print(f"Método: {request.method}")
+    print(f"Form data: {request.form}")
+    print(f"CSRF en form data: {'csrf_token' in request.form}")
+    if 'csrf_token' in request.form:
+        print(f"Valor CSRF recibido: {request.form['csrf_token']}")
+    print("=" * 50)
+    # FIN DIAGNÓSTICO
+
+    resultado = None
+    nombre = None
+
+    if request.method == "POST" and form.validate():
+        nombre = form.nombre.data
+        cantB = form.cantB.data
+        cantP = form.cantP.data
+        formPago = form.tarjeta.data
+
+        resultado = procesar(formPago, cantB, cantP)
+
+    return render_template(
+        "cine.html",
+        form=form,
+        resultado=resultado,
+        nombre=nombre, 
+    )
 
 if __name__ == '__main__':
     csrf.init_app(app)

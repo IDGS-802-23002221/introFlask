@@ -4,7 +4,10 @@
 
 {% block content %}
 <h2>Distancia entre dos puntos</h2>
+
 <form method="POST">
+     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
     {{ m.datos("x1", "Coordenada X1", "number") }}
     {{ m.datos("y1", "Coordenada Y1", "number") }}
     {{ m.datos("x2", "Coordenada X2","number") }}
