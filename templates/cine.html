@@ -1,0 +1,38 @@
+{% import "_macros.html" as macro %}
+<link rel="stylesheet" href="../static/css/cine.css">
+<div class="cinepolis-bg">
+    <div class=git ."cinepolis-container">
+
+        
+
+        <div class="panel entradas">
+            <h2>Entradas</h2>
+
+            <form action="/cine" method="POST" novalidate>
+                {{form.csrf_token}}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                {{ macro.campoNuevo(form.nombre) }}
+                {{ macro.campoNuevo(form.cantP) }}
+                {{ macro.campoNuevo(form.cantB) }}
+                {{ macro.campoNuevo(form.tarjeta) }}
+
+                <div class="acciones">
+                    <button type="submit">Procesar</button>
+                    <button type="reset">Salir</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel salidas">
+            <h2>Salidas</h2>
+
+            {% if resultado %}
+                <div class="resultado">
+                    Valor a pagar: {{ resultado }}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
